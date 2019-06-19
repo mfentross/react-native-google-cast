@@ -2,8 +2,10 @@ package com.reactnative.googlecast;
 
 import android.content.Intent;
 import android.net.Uri;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
@@ -30,6 +32,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.common.images.WebImage;
 
 import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,7 +63,7 @@ public class GoogleCastModule
     protected static final String MEDIA_PROGRESS_UPDATED =
             "GoogleCast:MediaProgressUpdated";
 
-    protected static final  String CHANNEL_MESSAGE_RECEIVED = "GoogleCast:ChannelMessageReceived";
+    protected static final String CHANNEL_MESSAGE_RECEIVED = "GoogleCast:ChannelMessageReceived";
 
     private CastSession mCastSession;
     private SessionManagerListener<CastSession> mSessionManagerListener;
@@ -192,17 +195,17 @@ public class GoogleCastModule
         getReactApplicationContext().runOnUiQueueThread(new Runnable() {
             @Override
             public void run() {
-              if (mCastSession == null) {
-                promise.resolve(null);
-                return;
-              }
+                if (mCastSession == null) {
+                    promise.resolve(null);
+                    return;
+                }
 
-              WritableMap map = Arguments.createMap();
-              map.putString("id", mCastSession.getCastDevice().getDeviceId());
-              map.putString("version", mCastSession.getCastDevice().getDeviceVersion());
-              map.putString("name", mCastSession.getCastDevice().getFriendlyName());
-              map.putString("model", mCastSession.getCastDevice().getModelName());
-              promise.resolve(map);
+                WritableMap map = Arguments.createMap();
+                map.putString("id", mCastSession.getCastDevice().getDeviceId());
+                map.putString("version", mCastSession.getCastDevice().getDeviceVersion());
+                map.putString("name", mCastSession.getCastDevice().getFriendlyName());
+                map.putString("model", mCastSession.getCastDevice().getModelName());
+                promise.resolve(map);
             }
         });
     }
@@ -248,7 +251,7 @@ public class GoogleCastModule
 
     @ReactMethod
     public void sendMessage(final String message, final String namespace, final Promise promise) {
-        if(mCastSession != null){
+        if (mCastSession != null) {
             getReactApplicationContext().runOnUiQueueThread(new Runnable() {
                 @Override
                 public void run() {
@@ -280,7 +283,8 @@ public class GoogleCastModule
             getReactApplicationContext().runOnUiQueueThread(new Runnable() {
                 @Override
                 public void run() {
-                    mCastSession.getRemoteMediaClient().play();
+                    if (mCastSession.getRemoteMediaClient() != null)
+                        mCastSession.getRemoteMediaClient().play();
                 }
             });
         }
@@ -292,7 +296,8 @@ public class GoogleCastModule
             getReactApplicationContext().runOnUiQueueThread(new Runnable() {
                 @Override
                 public void run() {
-                    mCastSession.getRemoteMediaClient().pause();
+                    if (mCastSession.getRemoteMediaClient() != null)
+                        mCastSession.getRemoteMediaClient().pause();
                 }
             });
         }
@@ -304,7 +309,8 @@ public class GoogleCastModule
             getReactApplicationContext().runOnUiQueueThread(new Runnable() {
                 @Override
                 public void run() {
-                    mCastSession.getRemoteMediaClient().stop();
+                    if (mCastSession.getRemoteMediaClient() != null)
+                        mCastSession.getRemoteMediaClient().stop();
                 }
             });
         }
@@ -316,7 +322,8 @@ public class GoogleCastModule
             getReactApplicationContext().runOnUiQueueThread(new Runnable() {
                 @Override
                 public void run() {
-                    mCastSession.getRemoteMediaClient().seek(position * 1000);
+                    if (mCastSession.getRemoteMediaClient() != null)
+                        mCastSession.getRemoteMediaClient().seek(position * 1000);
                 }
             });
         }
